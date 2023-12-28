@@ -1,0 +1,38 @@
+live_config_reload = true
+
+[cursor.style]
+blinking = "On"
+shape = "Block"
+
+[font]
+size = 15
+
+[font.normal]
+family = "Roboto Mono"
+style = "Medium"
+
+[[keyboard.bindings]]
+chars = "\u001BF"
+key = "Right"
+mods = "Alt"
+
+[[keyboard.bindings]]
+chars = "\u001BB"
+key = "Left"
+mods = "Alt"
+
+[[keyboard.bindings]]
+action = "IncreaseFontSize"
+key = "I"
+mods = "Command"
+
+[scrolling]
+history = 10000
+
+[window]
+dynamic_title = true
+title = "Terminal"
+
+[window.padding]
+x = 1
+y = 1
