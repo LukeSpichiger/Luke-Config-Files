@@ -36,6 +36,9 @@ opt.splitright = true
 opt.splitbelow = true
 opt.iskeyword:append("-")
 
+-- syntax
+opt.syntax = 'on'
+
 vim.cmd [[
 let g:lightline = {
       \ 'colorscheme': 'one',
@@ -54,6 +57,8 @@ if not vim.loop.fs_stat(lazypath) then
   })
 end
 vim.opt.rtp:prepend(lazypath)
+
+-- Lazy Setup
 
 require("lazy").setup {
     {
@@ -81,10 +86,60 @@ require("lazy").setup {
         })
         end
     },
-    -- init.lua:
     {
     'nvim-telescope/telescope.nvim',
       dependencies = { 'nvim-lua/plenary.nvim' }
-    }
+    },
+    {'nvim-treesitter/nvim-treesitter'},
+    {'hrsh7th/nvim-cmp'},
+    {'hrsh7th/cmp-nvim-lsp'},
+    {'neovim/nvim-lspconfig'},
+}
+
+
+-- Treesitter configuration
+require'nvim-treesitter.configs'.setup {
+    highlight = {
+        enable = true,
+        additional_vim_regex_highlighting = false,
+    },
+    ensure_installed = "c", -- Only install C tree-sitter parser
+}
+
+-- LSP and Completion
+local lspconfig = require'lspconfig'
+local cmp = require'cmp'
+
+-- nvim-cmp setup
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      -- For `vsnip` users.
+      vim.fn["vsnip#anonymous"](args.body)
+      -- For `luasnip` users.
+      -- require('luasnip').lsp_expand(args.body)
+    end,
+  },
+  mapping = cmp.mapping.preset.insert({
+    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.abort(),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+  }),
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+    { name = 'vsnip' }, -- For vsnip users.
+    -- { name = 'luasnip' }, -- For luasnip users.
+    { name = 'buffer' },
+    { name = 'path' }
+  })
+})
+
+-- Clangd setup for C
+lspconfig.clangd.setup{
+    on_attach = function(_, bufnr)
+        -- [Key mapping and additional setup]
+    end,
 }
 
