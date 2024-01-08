@@ -7,7 +7,9 @@ lvim.reload_config_on_save = true
 
 lvim.plugins = {
   { "lunarvim/colorschemes" },
+  { "theprimeagen/vim-be-good" },
 }
 
 lvim.colorscheme = 'onedark'
 lvim.format_on_save = true
+vim.wo.relativenumber = true
